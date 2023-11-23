@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  database:
+    image: postgres
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schemas.sql
+    environment:
+      - POSTGRES_DB=sampleDB
+      - POSTGRES_USER=sampleDB
+      - POSTGRES_PASSWORD=password #replace with your postgres password
+    healthcheck:
+      test: pg_isready -U sampleDB
+      interval: 5s
+      timeout: 1s
+      retries: 3
+    ports:
+      - 5432:5432
+
+  app:
+    image: app
+    build: src
+    command: ["./jointTables.py"]
+    volumes:
+      - ./data:/data

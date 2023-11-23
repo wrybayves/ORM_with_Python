@@ -1,0 +1,1 @@
+many to one is as one to many relationship
